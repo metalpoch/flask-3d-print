@@ -1,6 +1,13 @@
 import os
-from dotenv import load_dotenv
+import socket
 
+# Forzar IPv4 para entornos sin soporte IPv6 (ej: Render + Supabase)
+_original_getaddrinfo = socket.getaddrinfo
+def _ipv4_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    return _original_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+socket.getaddrinfo = _ipv4_getaddrinfo
+
+from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
