@@ -20,7 +20,7 @@
                         <div class="message-header">
                             <strong>{{ msg.nombre }}</strong>
                             <span class="message-email">{{ msg.email }}</span>
-                            <span class="message-date">{{ msg.fecha.strftime('%d/%m/%Y') }}</span>
+                            <span class="message-date">{{ msg.fecha|fmtdate }}</span>
                         </div>
                         <p>{{ msg.mensaje }}</p>
                     </div>
