@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Fooziman</h1>
+        <p class="hero-subtitle">Repuestos vintage impresos en 3D</p>
+        <p class="hero-desc">Damos vida a las motos clásicas con tecnología de escaneo e impresión 3D de precisión.</p>
+        <a href="#contacto" class="btn btn-primary">Solicitar Presupuesto</a>
+    </div>
+</section>
+
+<section class="servicios" id="servicios">
+    <div class="container">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="servicios-grid">
+            <div class="servicio-card">
+                <div class="servicio-icon">📐</div>
+                <h3>Escaneo 3D</h3>
+                <p>Escaneo de alta precisión de repuestos originales para crear réplicas exactas en formato digital.</p>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">🖨️</div>
+                <h3>Impresión 3D</h3>
+                <p>Impresión con materiales de alta resistencia: PLA, ABS, PETG y Nylon para piezas funcionales.</p>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">🔧</div>
+                <h3>Personalización</h3>
+                <p>Adaptamos y mejoramos diseños originales según las necesidades específicas de cada moto.</p>
+            </div>
+            <div class="servicio-card">
+                <div class="servicio-icon">🏍️</div>
+                <h3>Asesoramiento</h3>
+                <p>Consultoría técnica para determinar la mejor solución de material y diseño para cada repuesto.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="portafolio" id="portafolio">
+    <div class="container">
+        <h2 class="section-title">Portafolio</h2>
+        <p class="section-subtitle">Algunos de nuestros trabajos realizados</p>
+        <div class="portafolio-grid">
+            {% for item in portfolio_items %}
+            <div class="portafolio-item">
+                {% if item.imagen_url %}
+                <img src="{{ item.imagen_url }}" alt="{{ item.titulo }}">
+                {% else %}
+                <div class="portafolio-placeholder">
+                    <span>🔧</span>
+                </div>
+                {% endif %}
+                <div class="portafolio-info">
+                    <h3>{{ item.titulo }}</h3>
+                    <p>{{ item.descripcion }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% if not portfolio_items %}
+            <div class="portafolio-empty">
+                <p>Próximamente mostraremos nuestros mejores trabajos.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="proceso" id="proceso">
+    <div class="container">
+        <h2 class="section-title">Nuestro Proceso</h2>
+        <div class="proceso-steps">
+            <div class="proceso-step">
+                <div class="step-number">01</div>
+                <h3>Recepción</h3>
+                <p>Recibimos la pieza original o las especificaciones del repuesto needed.</p>
+            </div>
+            <div class="proceso-step">
+                <div class="step-number">02</div>
+                <h3>Escaneo</h3>
+                <p>Escaneamos la pieza con nuestro escáner 3D de alta resolución.</p>
+            </div>
+            <div class="proceso-step">
+                <div class="step-number">03</div>
+                <h3>Modelado</h3>
+                <p>Procesamos y optimizamos el modelo digital para impresión.</p>
+            </div>
+            <div class="proceso-step">
+                <div class="step-number">04</div>
+                <h3>Impresión</h3>
+                <p>Imprimimos la pieza con el material más adecuado.</p>
+            </div>
+            <div class="proceso-step">
+                <div class="step-number">05</div>
+                <h3>Control</h3>
+                <p>Verificamos dimensionalmente la pieza impresa contra el original.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contacto" id="contacto">
+    <div class="container">
+        <h2 class="section-title">Contacto</h2>
+        <p class="section-subtitle">¿Necesitas un repuesto? Cuéntanos qué buscas.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/contacto" class="contact-form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.nombre.label }}
+                {{ form.nombre(class="form-control", placeholder="Tu nombre") }}
+                {% for error in form.nombre.errors %}
+                <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="tu@email.com") }}
+                {% for error in form.email.errors %}
+                <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.mensaje.label }}
+                {{ form.mensaje(class="form-control", rows="5", placeholder="Describe el repuesto que necesitas...") }}
+                {% for error in form.mensaje.errors %}
+                <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

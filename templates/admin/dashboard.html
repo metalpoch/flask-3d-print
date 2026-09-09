@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Fooziman Admin{% endblock %}
+
+{% block content %}
+<section class="admin-dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <a href="/admin/logout" class="btn btn-secondary">Cerrar Sesión</a>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-section">
+                <h2>Mensajes de Contacto</h2>
+                {% if messages %}
+                <div class="messages-list">
+                    {% for msg in messages %}
+                    <div class="message-card">
+                        <div class="message-header">
+                            <strong>{{ msg.nombre }}</strong>
+                            <span class="message-email">{{ msg.email }}</span>
+                            <span class="message-date">{{ msg.fecha.strftime('%d/%m/%Y') }}</span>
+                        </div>
+                        <p>{{ msg.mensaje }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="empty-state">No hay mensajes de contacto aún.</p>
+                {% endif %}
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Portafolio</h2>
+                <a href="/admin/portfolio/nuevo" class="btn btn-primary">Agregar Pieza</a>
+
+                {% if portfolio_items %}
+                <div class="portfolio-list">
+                    {% for item in portfolio_items %}
+                    <div class="portfolio-card">
+                        <div class="portfolio-info">
+                            <h3>{{ item.titulo }}</h3>
+                            <p>{{ item.descripcion[:100] }}{% if item.descripcion|length > 100 %}...{% endif %}</p>
+                        </div>
+                        <form method="POST" action="/admin/portfolio/{{ item.id }}/eliminar" class="inline-form">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta pieza?')">Eliminar</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="empty-state">No hay piezas en el portafolio. ¡Agrega la primera!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

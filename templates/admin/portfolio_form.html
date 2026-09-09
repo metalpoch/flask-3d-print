@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Pieza - Fooziman Admin{% endblock %}
+
+{% block content %}
+<section class="admin-form">
+    <div class="container">
+        <div class="form-card">
+            <h1>Agregar Pieza al Portafolio</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/admin/portfolio/nuevo">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.titulo.label }}
+                    {{ form.titulo(class="form-control") }}
+                    {% for error in form.titulo.errors %}
+                    <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.descripcion.label }}
+                    {{ form.descripcion(class="form-control", rows="4") }}
+                </div>
+                <div class="form-group">
+                    {{ form.imagen_url.label }}
+                    {{ form.imagen_url(class="form-control", placeholder="https://ejemplo.com/imagen.jpg") }}
+                </div>
+                <div class="form-actions">
+                    <a href="/admin/dashboard" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
